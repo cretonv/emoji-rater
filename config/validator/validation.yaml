@@ -6,3 +6,8 @@ App\Entity\Rating:
       - NotNull: ~
     authorUserMail:
       - Email: {message: The email is not a valid email.}
+      - NotNull: ~
+    product:
+      - NotNull: ~
+    votes:
+      - NotNull: ~
