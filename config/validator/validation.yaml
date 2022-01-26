@@ -28,3 +28,11 @@ App\Entity\Vote:
       - Email: {message: The email is not a valid email.}
     rating:
       - NotNull: ~
+App\Entity\Website:
+  properties:
+    domain:
+      - NotNull: ~
+    token:
+      - NotNull: ~
+    products:
+      - NotNull: ~
