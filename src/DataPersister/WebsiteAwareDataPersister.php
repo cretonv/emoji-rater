@@ -4,10 +4,9 @@ namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Context\WebsiteContext;
-use App\Entity\Product;
-use Symfony\Component\HttpFoundation\RequestStack;
+use App\Entity\WebsiteAwareInterface;
 
-final class ProductDataPersister implements ContextAwareDataPersisterInterface {
+final class WebsiteAwareDataPersister implements ContextAwareDataPersisterInterface {
 
     public function __construct(
         private ContextAwareDataPersisterInterface $decorated,
@@ -16,13 +15,13 @@ final class ProductDataPersister implements ContextAwareDataPersisterInterface {
     }
 
     public function supports($data, array $context = []): bool {
-        return $data instanceof Product;
+        return $data instanceof WebsiteAwareInterface;
     }
 
     public function persist($data, array $context = []) {
         $website = $this->websiteContext->getWebsite();
 
-        if ($data instanceof Product) {
+        if ($data instanceof WebsiteAwareInterface) {
             $data->setWebsite($website);
         }
 
@@ -39,6 +38,7 @@ final class ProductDataPersister implements ContextAwareDataPersisterInterface {
     }
 
     public function remove($data, array $context = []) {
+
         return $this->decorated->remove($data, $context);
     }
 }

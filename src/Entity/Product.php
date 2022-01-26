@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
+class Product implements WebsiteAwareInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -5,12 +5,9 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Context\WebsiteContext;
-use App\Entity\Product;
-use App\Repository\ProductRepository;
-use App\Repository\WebsiteRepository;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use App\Entity\WebsiteAwareInterface;
 
-final class ProductCollectionDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface {
+final class WebsiteAwareCollectionDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface {
 
     public function __construct(
         private WebsiteContext $websiteContext
@@ -24,6 +21,6 @@ final class ProductCollectionDataProvider implements ContextAwareCollectionDataP
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool {
-        return Product::class === $resourceClass;
+        return WebsiteAwareInterface::class === $resourceClass;
     }
 }
