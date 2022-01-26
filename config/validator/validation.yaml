@@ -1,7 +1,8 @@
 App\Entity\Rating:
   properties:
     mark:
-      - LessThan: {value: 5, groups: [registration], message: The mark must be less than 5}
+      - LessThan: {value: 5, message: The mark must be less than 5}
       - Type: {type: float, message: The mark must be a Float}
+      - NotNull: ~
     authorUserMail:
-      - Email: {message: The email is not a valid email., groups: [registration]}
+      - Email: {message: The email is not a valid email.}

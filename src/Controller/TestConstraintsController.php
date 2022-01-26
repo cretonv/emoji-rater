@@ -13,7 +13,7 @@ class TestConstraintsController extends AbstractController
     public function index(): Response
     {
         $rating = new Rating();
-        
+
 
         return $this->render('test_constraints/index.html.twig', [
             'controller_name' => 'TestConstraintsController',
