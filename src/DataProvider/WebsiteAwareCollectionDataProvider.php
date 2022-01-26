@@ -21,6 +21,6 @@ final class WebsiteAwareCollectionDataProvider implements ContextAwareCollection
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool {
-        return WebsiteAwareInterface::class === $resourceClass;
+        return in_array(WebsiteAwareInterface::class, class_implements($resourceClass));
     }
 }
