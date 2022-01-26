@@ -19,4 +19,12 @@ App\Entity\Product:
       - NotNull: ~
     ratings:
       - NotNull: ~
-
+App\Entity\Vote:
+  properties:
+    isUp:
+      - NotNull: ~
+    authorUserEmail:
+      - NotNull: ~
+      - Email: {message: The email is not a valid email.}
+    rating:
+      - NotNull: ~
