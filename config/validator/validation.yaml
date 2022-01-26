@@ -11,3 +11,12 @@ App\Entity\Rating:
       - NotNull: ~
     votes:
       - NotNull: ~
+App\Entity\Product:
+  properties:
+    reference:
+      - NotNull: ~
+    website:
+      - NotNull: ~
+    ratings:
+      - NotNull: ~
+
