@@ -1,0 +1,38 @@
+App\Entity\Rating:
+  properties:
+    mark:
+      - LessThan: {value: 5, message: The mark must be less than 5}
+      - Type: {type: float, message: The mark must be a Float}
+      - NotNull: ~
+    authorUserMail:
+      - Email: {message: The email is not a valid email.}
+      - NotNull: ~
+    product:
+      - NotNull: ~
+    votes:
+      - NotNull: ~
+App\Entity\Product:
+  properties:
+    reference:
+      - NotNull: ~
+    website:
+      - NotNull: ~
+    ratings:
+      - NotNull: ~
+App\Entity\Vote:
+  properties:
+    isUp:
+      - NotNull: ~
+    authorUserEmail:
+      - NotNull: ~
+      - Email: {message: The email is not a valid email.}
+    rating:
+      - NotNull: ~
+App\Entity\Website:
+  properties:
+    domain:
+      - NotNull: ~
+    token:
+      - NotNull: ~
+    products:
+      - NotNull: ~
