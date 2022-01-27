@@ -27,5 +27,5 @@ services:
         decorates: 'api_platform.doctrine.orm.data_persister'
     App\DataProvider\WebsiteAwareItemDataProvider:
         decorates: 'api_platform.doctrine.orm.item_data_provider'
-    App\DataProvider\WebsiteAwareCollectionDataProvider:
-        decorates: 'api_platform.collection_data_provider'
+#    App\DataProvider\ProductCollectionDataProvider:
+#        decorates: 'api_platform.collection_data_provider'
