@@ -1,0 +1,12 @@
+App\Entity\Product:
+  product_website_1_{1..4}:
+    reference: <word()>
+    website: '@website_1'
+
+  product_website_2_{1..4}:
+    reference: <word()>
+    website: '@website_2'
+
+  product_website_3_{1..4}:
+    reference: <word()>
+    website: '@website_3'

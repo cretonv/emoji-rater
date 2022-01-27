@@ -1,0 +1,20 @@
+App\Entity\Rating:
+  rating_product_website_1_1_{1..2}:
+    mark: <randomFloat(1, 0, 5)>
+    authorUserMail: <email()>
+    product: '@product_website_1_1'
+
+  rating_product_website_1_2_{1..2}:
+    mark: <randomFloat(1, 0, 5)>
+    authorUserMail: <email()>
+    product: '@product_website_1_2'
+
+  rating_product_website_1_3_{1..2}:
+    mark: <randomFloat(1, 0, 5)>
+    authorUserMail: <email()>
+    product: '@product_website_1_3'
+
+  rating_product_website_1_4_{1..2}:
+    mark: <randomFloat(1, 0, 5)>
+    authorUserMail: <email()>
+    product: '@product_website_1_4'
