@@ -10,7 +10,7 @@ use App\Repository\ProductRepository;
 use App\Repository\WebsiteRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-final class ProductCollectionDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface {
+final class WebsiteAwareCollectionDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface {
 
     public function __construct(
         private WebsiteContext $websiteContext

@@ -9,7 +9,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 
-#[ApiResource]
+#[ApiResource(
+    itemOperations: [
+        "get" => [ "security" => "is_granted('READ_PRODUCT', object)" ],
+    ]
+)]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product implements WebsiteAwareInterface
 {
