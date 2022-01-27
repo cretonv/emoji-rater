@@ -1,0 +1,5 @@
+App\Entity\Vote:
+  vote:
+    isUp: true
+    authorUserEmail: <email()>
+    rating: '@rating_product_website_1_1_1'

@@ -1,0 +1,4 @@
+App\Entity\Website:
+  website_{1..3}:
+    domain: <url()>
+    token: <asciify()>
