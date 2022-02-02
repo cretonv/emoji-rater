@@ -9,9 +9,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
+    ],
+    itemOperations: [
+        "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+    ]
+)]
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
-class Rating
+class Rating implements WebsiteAwareInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -120,5 +127,9 @@ class Rating
         }
 
         return $this;
+    }
+
+    public function getWebsite(): ?Website {
+        return $this->getProduct()->getWebsite();
     }
 }

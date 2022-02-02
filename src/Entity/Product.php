@@ -10,8 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 #[ApiResource(
+    collectionOperations: [
+        "get",
+        "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
+    ],
     itemOperations: [
-        "get" => [ "security" => "is_granted('READ_PRODUCT', object)" ],
+        "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "put" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "delete" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
     ]
 )]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]

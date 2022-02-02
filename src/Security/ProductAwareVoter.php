@@ -5,12 +5,13 @@ namespace App\Security;
 use App\Context\WebsiteContext;
 use App\Entity\Product;
 use App\Entity\Website;
+use App\Entity\WebsiteAwareInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ProductAwareVoter extends Voter {
 
-    const READ_PRODUCT = 'READ_PRODUCT';
+    const READ_WA_ITEM = 'READ_WA_ITEM';
 
     public function __construct(
         private WebsiteContext $websiteContext
@@ -18,10 +19,10 @@ class ProductAwareVoter extends Voter {
     }
 
     protected function supports(string $attribute, $subject) {
-        if (!in_array($attribute, [self::READ_PRODUCT])) {
+        if (!in_array($attribute, [self::READ_WA_ITEM])) {
             return false;
         }
-        if (!$subject instanceof Product) {
+        if (!($subject instanceof WebsiteAwareInterface)) {
             return false;
         }
 
@@ -30,18 +31,16 @@ class ProductAwareVoter extends Voter {
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token) {
         $website = $this->websiteContext->getWebsite();
-        /** @var Product $product */
-        $product = $subject;
+        /** @var WebsiteAwareInterface $subject */
         switch ($attribute) {
-            case self::READ_PRODUCT:
-                return $this->canView($product, $website);
+            case self::READ_WA_ITEM:
+                return $this->canView($subject, $website);
         }
 
         throw new \LogicException('This code should not be reached!');
 
     }
-
-    private function canView(Product $product, Website $website) {
-        return $website === $product->getWebsite();
+    private function canView(WebsiteAwareInterface $subject, Website $website) {
+        return $website === $subject->getWebsite();
     }
 }

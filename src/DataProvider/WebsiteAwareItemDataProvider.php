@@ -17,7 +17,6 @@ class WebsiteAwareItemDataProvider implements ItemDataProviderInterface, Restric
     }
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []) {
-        die('coucou');
         $item = $this->decorated->getItem($resourceClass, $id, $operationName, $context);
         if ($item instanceof WebsiteAwareInterface) {
             $website = $this->websiteContext->getWebsite();
