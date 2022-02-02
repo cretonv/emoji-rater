@@ -7,10 +7,12 @@ use App\Repository\RatingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ApiResource(
     collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => 'rating:collection:get']],
         "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
     ],
     itemOperations: [
@@ -131,5 +133,11 @@ class Rating implements WebsiteAwareInterface
 
     public function getWebsite(): ?Website {
         return $this->getProduct()->getWebsite();
+    }
+
+    #[Groups("rating:collection:get")] // <- MAGIC IS HERE, you can set a group on a method.
+    public function getAverage(): int
+    {
+        return 5;
     }
 }

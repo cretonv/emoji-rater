@@ -22,19 +22,17 @@ class RatingRepository extends ServiceEntityRepository
     // /**
     //  * @return Rating[] Returns an array of Rating objects
     //  */
-    /*
-    public function findByExampleField($value)
+    public function findByWebsite($website)
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+            ->leftJoin('r.product','p')
+            ->andWhere('p.website = :val')
+            ->setParameter('val', $website)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Rating
