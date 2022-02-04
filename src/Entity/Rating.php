@@ -7,11 +7,22 @@ use App\Repository\RatingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
+    ],
+    itemOperations: [
+        "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "put" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "delete" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+    ]
+)]
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
-class Rating
+class Rating implements WebsiteAwareInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,7 +33,7 @@ class Rating
     private $mark;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $authorUserMail;
+    private $authorUserEmail;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ratings')]
     #[ORM\JoinColumn(nullable: false)]
@@ -56,14 +67,14 @@ class Rating
         return $this;
     }
 
-    public function getAuthorUserMail(): ?string
+    public function getAuthorUserEmail(): ?string
     {
-        return $this->authorUserMail;
+        return $this->authorUserEmail;
     }
 
-    public function setAuthorUserMail(string $authorUserMail): self
+    public function setAuthorUserEmail(string $authorUserEmail): self
     {
-        $this->authorUserMail = $authorUserMail;
+        $this->authorUserEmail = $authorUserEmail;
 
         return $this;
     }
@@ -120,5 +131,15 @@ class Rating
         }
 
         return $this;
+    }
+
+    public function getWebsite(): ?Website {
+        return $this->getProduct()->getWebsite();
+    }
+
+    #[Groups("rating:collection:get")] // <- MAGIC IS HERE, you can set a group on a method.
+    public function getAverage(): int
+    {
+        return 5;
     }
 }

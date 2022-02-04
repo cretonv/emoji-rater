@@ -9,9 +9,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
+    ],
+    itemOperations: [
+        "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "put" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "delete" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+    ]
+)]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
+class Product implements WebsiteAwareInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

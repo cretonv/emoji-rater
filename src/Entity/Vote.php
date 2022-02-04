@@ -6,9 +6,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
+    ],
+    itemOperations: [
+        "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "put" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "delete" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+    ]
+)]
 #[ORM\Entity(repositoryClass: VoteRepository::class)]
-class Vote
+class Vote implements WebsiteAwareInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -79,5 +89,9 @@ class Vote
         $this->metadata = $metadata;
 
         return $this;
+    }
+
+    public function getWebsite(): ?Website {
+        return $this->getRating()->getWebsite();
     }
 }
