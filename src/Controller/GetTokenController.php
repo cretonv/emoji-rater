@@ -24,6 +24,11 @@ class GetTokenController extends AbstractController
         return str_replace('-', '', Uuid::v4());
     }
 
+    /**
+     * Get a token
+     * @param $data
+     * @return string|null
+     */
     public function __invoke($data) {
         $url = $this->requestStack->getCurrentRequest()->query->get('website_url');
         if (empty($url)) {

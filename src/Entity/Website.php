@@ -14,9 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
         'get_token' => [
             'method' => 'GET',
             'path' => '/get_token',
-            'controller' => GetTokenController::class
+            'controller' => GetTokenController::class,
         ]
-    ]
+    ],
+    itemOperations: []
 )]
 #[ORM\Entity(repositoryClass: WebsiteRepository::class)]
 class Website
