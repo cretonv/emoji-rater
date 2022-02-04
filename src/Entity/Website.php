@@ -17,7 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
             'controller' => GetTokenController::class,
         ]
     ],
-    itemOperations: []
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ]
 )]
 #[ORM\Entity(repositoryClass: WebsiteRepository::class)]
 class Website
