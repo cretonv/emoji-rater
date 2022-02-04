@@ -6,6 +6,7 @@ use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Context\WebsiteContext;
 use App\Entity\Product;
 use App\Entity\Rating;
+use App\Entity\Vote;
 use App\Entity\WebsiteAwareInterface;
 
 /**
@@ -33,6 +34,9 @@ final class WebsiteAwareDataPersister implements ContextAwareDataPersisterInterf
         if ($data instanceof Rating) {
             return $this->persistRating($data, $context);
         }
+        if ($data instanceof Vote) {
+            return $this->persistVote($data, $context);
+        }
     }
 
     private function persistProduct(Product $product, $context) {
@@ -44,6 +48,10 @@ final class WebsiteAwareDataPersister implements ContextAwareDataPersisterInterf
     private function persistRating(Rating $rating, $context) {
 //        dd($rating);
         return $this->decorated->persist($rating, $context);
+    }
+    private function persistVote(Vote $vote, $context) {
+//        dd($rating);
+        return $this->decorated->persist($vote, $context);
     }
 
     public function remove($data, array $context = []) {

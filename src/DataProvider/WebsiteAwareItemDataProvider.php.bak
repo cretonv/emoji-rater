@@ -17,7 +17,7 @@
 //    }
 //
 //    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []) {
-//        $item = $this->decorated->getItem($resourceClass, $id, $operationName, $context)
+//        $item = $this->decorated->getItem($resourceClass, $id, $operationName, $context);
 //
 //        return $item;
 //    }

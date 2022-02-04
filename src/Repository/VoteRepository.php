@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Context\WebsiteContext;
 use App\Entity\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,27 +15,33 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class VoteRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(ManagerRegistry $registry, private WebsiteContext $websiteContext) {
         parent::__construct($registry, Vote::class);
     }
 
-    // /**
-    //  * @return Vote[] Returns an array of Vote objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
+
+    private function getByWebsiteQuery(): \Doctrine\ORM\QueryBuilder {
+        $website = $this->websiteContext->getWebsite();
+
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->leftJoin('v.rating', 'r')
+            ->leftJoin('r.product', 'p')
+            ->andWhere('p.website = :val')
+            ->setParameter('val', $website);
     }
-    */
+
+    public function findAllWebsite() {
+        return $this->getByWebsiteQuery()
+            ->getQuery()
+            ->getResult();
+    }
+    public function findByUserEmail($email) {
+        return $this->getByWebsiteQuery()
+            ->andWhere('v.authorUserEmail = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?Vote

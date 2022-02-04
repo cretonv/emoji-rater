@@ -9,7 +9,7 @@ use App\Entity\WebsiteAwareInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class ProductAwareVoter extends Voter {
+class WebsiteAwareVoter extends Voter {
 
     const READ_WA_ITEM = 'READ_WA_ITEM';
 
@@ -29,7 +29,7 @@ class ProductAwareVoter extends Voter {
         return true;
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         $website = $this->websiteContext->getWebsite();
         /** @var WebsiteAwareInterface $subject */
         switch ($attribute) {
@@ -40,7 +40,7 @@ class ProductAwareVoter extends Voter {
         throw new \LogicException('This code should not be reached!');
 
     }
-    private function canView(WebsiteAwareInterface $subject, Website $website) {
+    private function canView(WebsiteAwareInterface $subject, Website $website): bool {
         return $website === $subject->getWebsite();
     }
 }

@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class WebsiteContext {
+    private Website $_website;
+
     public function __construct(
         private RequestStack $requestStack,
         private WebsiteRepository $websiteRepository,
@@ -15,14 +17,16 @@ class WebsiteContext {
     }
 
     public function getWebsite(): Website {
-        $apiKey = $this->requestStack->getCurrentRequest()->headers->get('authorization');
-        if (empty($apiKey)) {
-            throw new BadRequestException('The API Key must be specified');
+        if (empty($this->_website)) {
+            $apiKey = $this->requestStack->getCurrentRequest()->headers->get('authorization');
+            if (empty($apiKey)) {
+                throw new BadRequestException('The API Key must be specified');
+            }
+            $this->_website = $this->websiteRepository->findOneBy(['token' => $apiKey]);
+            if (empty($this->_website)) {
+                throw new BadRequestException('The API Key is not valid');
+            }
         }
-        $website = $this->websiteRepository->findOneBy(['token' => $apiKey]);
-        if (empty($website)) {
-            throw new BadRequestException('The API Key is not valid');
-        }
-        return $website;
+        return $this->_website;
     }
 }

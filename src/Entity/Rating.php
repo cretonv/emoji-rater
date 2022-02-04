@@ -12,11 +12,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     collectionOperations: [
-        'get' => ['normalization_context' => ['groups' => 'rating:collection:get']],
+        "get",
         "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
     ],
     itemOperations: [
         "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "put" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "delete" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
     ]
 )]
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
@@ -31,7 +33,7 @@ class Rating implements WebsiteAwareInterface
     private $mark;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $authorUserMail;
+    private $authorUserEmail;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ratings')]
     #[ORM\JoinColumn(nullable: false)]
@@ -65,14 +67,14 @@ class Rating implements WebsiteAwareInterface
         return $this;
     }
 
-    public function getAuthorUserMail(): ?string
+    public function getAuthorUserEmail(): ?string
     {
-        return $this->authorUserMail;
+        return $this->authorUserEmail;
     }
 
-    public function setAuthorUserMail(string $authorUserMail): self
+    public function setAuthorUserEmail(string $authorUserEmail): self
     {
-        $this->authorUserMail = $authorUserMail;
+        $this->authorUserEmail = $authorUserEmail;
 
         return $this;
     }
