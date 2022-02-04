@@ -3,12 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\GetTokenController;
 use App\Repository\WebsiteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get_token' => [
+            'method' => 'GET',
+            'path' => '/get_token',
+            'controller' => GetTokenController::class
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: WebsiteRepository::class)]
 class Website
 {
