@@ -2,11 +2,11 @@
 
 Notre API va permettre à des sites web d'enregistrer des avis sur leurs produits. Ces avis auront eux même un système de vote ("upvote") qui permettront de donner un aperçu de la pertinence de la note.
 
-## Dépendances utilisés
+## Dépendances notables
 
 - Doctrine
 - Api Platform
-- 
+- Validator
 
 ## Lancer le projet
 
