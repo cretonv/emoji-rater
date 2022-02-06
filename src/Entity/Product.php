@@ -7,17 +7,21 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ApiResource(
     collectionOperations: [
         "get",
-        "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
+        "post" => ["security_post_denormalize" => "is_granted('READ_WA_ITEM', object)"]
     ],
     itemOperations: [
-        "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
-        "put" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
-        "delete" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+        "get" => ["security" => "is_granted('READ_WA_ITEM', object)"],
+        "put" => ["security" => "is_granted('READ_WA_ITEM', object)"],
+        "delete" => ["security" => "is_granted('READ_WA_ITEM', object)"],
+    ],
+    normalizationContext: [
+        "groups" => ['product']
     ]
 )]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -38,35 +42,31 @@ class Product implements WebsiteAwareInterface
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Rating::class)]
     private $ratings;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->ratings = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    #[Groups("product")]
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getReference(): ?string
-    {
+    #[Groups("product")]
+    public function getReference(): ?string {
         return $this->reference;
     }
 
-    public function setReference(string $reference): self
-    {
+    public function setReference(string $reference): self {
         $this->reference = $reference;
 
         return $this;
     }
 
-    public function getWebsite(): ?Website
-    {
+    public function getWebsite(): ?Website {
         return $this->website;
     }
 
-    public function setWebsite(?Website $website): self
-    {
+    public function setWebsite(?Website $website): self {
         $this->website = $website;
 
         return $this;
@@ -75,13 +75,12 @@ class Product implements WebsiteAwareInterface
     /**
      * @return Collection|Rating[]
      */
-    public function getRatings(): Collection
-    {
+    #[Groups("product")]
+    public function getRatings(): Collection {
         return $this->ratings;
     }
 
-    public function addRating(Rating $rating): self
-    {
+    public function addRating(Rating $rating): self {
         if (!$this->ratings->contains($rating)) {
             $this->ratings[] = $rating;
             $rating->setProduct($this);
@@ -90,8 +89,7 @@ class Product implements WebsiteAwareInterface
         return $this;
     }
 
-    public function removeRating(Rating $rating): self
-    {
+    public function removeRating(Rating $rating): self {
         if ($this->ratings->removeElement($rating)) {
             // set the owning side to null (unless already changed)
             if ($rating->getProduct() === $this) {
@@ -100,5 +98,17 @@ class Product implements WebsiteAwareInterface
         }
 
         return $this;
+    }
+
+
+    #[Groups("product")]
+    public function getAverageMark() {
+        $ratings = $this->getRatings()->toArray();
+        $c = count($ratings);
+
+        return array_reduce($ratings, function($average, $rating) use ($c) {
+            /** @var Rating $rating */
+            return $average + ($rating->getMark() / $c);
+        }, 0);
     }
 }

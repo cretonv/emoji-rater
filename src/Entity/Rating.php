@@ -12,13 +12,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     collectionOperations: [
-        "get",
+        "get" => [],
         "post" => [ "security_post_denormalize" => "is_granted('READ_WA_ITEM', object)" ]
     ],
     itemOperations: [
         "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
         "put" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
         "delete" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+    ],
+    normalizationContext: [
+        "groups" => ['rating']
     ]
 )]
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
@@ -50,11 +53,13 @@ class Rating implements WebsiteAwareInterface
         $this->votes = new ArrayCollection();
     }
 
+    #[Groups("rating")]
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    #[Groups("rating")]
     public function getMark(): ?float
     {
         return $this->mark;
@@ -67,6 +72,7 @@ class Rating implements WebsiteAwareInterface
         return $this;
     }
 
+    #[Groups("rating")]
     public function getAuthorUserEmail(): ?string
     {
         return $this->authorUserEmail;
@@ -79,6 +85,7 @@ class Rating implements WebsiteAwareInterface
         return $this;
     }
 
+    #[Groups("rating")]
     public function getProduct(): ?Product
     {
         return $this->product;
@@ -91,6 +98,7 @@ class Rating implements WebsiteAwareInterface
         return $this;
     }
 
+    #[Groups("rating")]
     public function getMetadata(): ?array
     {
         return $this->metadata;
@@ -106,6 +114,7 @@ class Rating implements WebsiteAwareInterface
     /**
      * @return Collection|Vote[]
      */
+    #[Groups("rating")]
     public function getVotes(): Collection
     {
         return $this->votes;
@@ -137,9 +146,16 @@ class Rating implements WebsiteAwareInterface
         return $this->getProduct()->getWebsite();
     }
 
-    #[Groups("rating:collection:get")] // <- MAGIC IS HERE, you can set a group on a method.
-    public function getAverage(): int
+    #[Groups("rating")]
+    public function getUpVoteScore(): int
     {
-        return 5;
+        $votes = $this->getVotes()->toArray();
+        return array_reduce($votes, function($val, $vote) {
+            /** @var Vote $vote */
+            if ($vote->getIsUp()) {
+                return $val + 1;
+            }
+            return $val - 1;
+        }, 0);
     }
 }
