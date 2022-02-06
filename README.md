@@ -20,12 +20,9 @@ Pour remplir la BDD des fixtures, lancer la commande `php bin/console hautelook:
 Une fois le projet lancé et la BDD mise en place, vous pouvez accéder aux différentes routes questionnables sur l'api à l'adresse suivante [localhost:8000/api](localhost:8000/api).
 
 Pour faire vos tests sur l'API, vous allez pouvoir avoir besoin d'un token valide. Pour récupérer celui-ci, choisissez un url (comme par exemple www.toto.fr), puis interroger l'api sur la route custom get_token de la sorte :
+
 ```
 http://localhost:8000/api/get_token?website_url={url}
 ```
 
 // TODO
-
-
-
-
