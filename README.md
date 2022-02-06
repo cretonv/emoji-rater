@@ -4,6 +4,7 @@ Notre API va permettre à des sites web d'enregistrer des avis sur leurs produit
 
 ## Dépendances notables
 
+- PHP >= 8.0
 - Doctrine
 - Api Platform
 - Validator
