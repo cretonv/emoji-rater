@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     collectionOperations: [
@@ -15,6 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
         "get" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
         "put" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
         "delete" => [ "security" => "is_granted('READ_WA_ITEM', object)" ],
+    ],
+    normalizationContext: [
+        "groups" => ['vote']
     ]
 )]
 #[ORM\Entity(repositoryClass: VoteRepository::class)]
@@ -38,11 +42,13 @@ class Vote implements WebsiteAwareInterface
     #[ORM\Column(type: 'json', nullable: true)]
     private $metadata = [];
 
+    #[Groups("vote")]
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    #[Groups("vote")]
     public function getIsUp(): ?bool
     {
         return $this->isUp;
@@ -55,6 +61,7 @@ class Vote implements WebsiteAwareInterface
         return $this;
     }
 
+    #[Groups("vote")]
     public function getAuthorUserEmail(): ?string
     {
         return $this->authorUserEmail;
@@ -67,6 +74,7 @@ class Vote implements WebsiteAwareInterface
         return $this;
     }
 
+    #[Groups("vote")]
     public function getRating(): ?Rating
     {
         return $this->rating;
@@ -79,6 +87,7 @@ class Vote implements WebsiteAwareInterface
         return $this;
     }
 
+    #[Groups("vote")]
     public function getMetadata(): ?array
     {
         return $this->metadata;

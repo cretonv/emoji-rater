@@ -53,6 +53,7 @@ class Rating implements WebsiteAwareInterface
         $this->votes = new ArrayCollection();
     }
 
+    #[Groups("rating")]
     public function getId(): ?int
     {
         return $this->id;
