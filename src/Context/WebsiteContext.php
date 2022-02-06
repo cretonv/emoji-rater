@@ -22,10 +22,11 @@ class WebsiteContext {
             if (empty($apiKey)) {
                 throw new BadRequestException('The API Key must be specified');
             }
-            $this->_website = $this->websiteRepository->findOneBy(['token' => $apiKey]);
-            if (empty($this->_website)) {
+            $website = $this->websiteRepository->findOneBy(['token' => $apiKey]);
+            if (empty($website)) {
                 throw new BadRequestException('The API Key is not valid');
             }
+            $this->_website = $website;
         }
         return $this->_website;
     }
